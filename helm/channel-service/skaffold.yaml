@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: channel-service
+build:
+  artifacts:
+    - image: aravsanj/opine-channel-service
+      context: ../../../backend/channel-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: channel-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

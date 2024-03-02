@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: notification-service
+build:
+  artifacts:
+    - image: aravsanj/opine-notification-service
+      context: ../../../backend/notification-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: notification-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: post-service
+build:
+  artifacts:
+    - image: aravsanj/opine-post-service
+      context: ../../../backend/post-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: post-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

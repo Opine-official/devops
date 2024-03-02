@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: user-service
+build:
+  artifacts:
+    - image: aravsanj/opine-user-service
+      context: ../../../backend/user-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: user-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

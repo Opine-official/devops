@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: feed-service
+build:
+  artifacts:
+    - image: aravsanj/opine-feed-service
+      context: ../../../backend/feed-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: feed-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

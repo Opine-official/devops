@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: admin-service
+build:
+  artifacts:
+    - image: aravsanj/opine-admin-service
+      context: ../../../backend/admin-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: admin-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0

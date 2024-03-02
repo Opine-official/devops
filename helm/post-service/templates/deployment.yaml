@@ -1,0 +1,61 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: {{ .Values.deployment.name }}
+  labels:
+    app: {{ .Values.deployment.name }}
+spec:
+  replicas: {{ .Values.deployment.replicaCount }}
+  selector:
+    matchLabels:
+      app: {{ .Values.deployment.podName }}
+  template:
+    metadata:
+      labels:
+        app: {{ .Values.deployment.podName }}
+    spec:
+      containers:
+        - name: {{ .Values.deployment.containerName }}
+          image: {{ .Values.deployment.imageName }}
+          imagePullPolicy: {{ .Values.deployment.imagePullPolicy }}
+          ports:
+            - name: http
+              containerPort: 4002
+              protocol: TCP
+          env:
+            - name: MONGODB_URL
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: MONGODB_URL
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: JWT_SECRET
+            - name: ADMIN_JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: ADMIN_JWT_SECRET
+            - name: AWS_ACCESS_KEY_ID
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: AWS_ACCESS_KEY_ID
+            - name: AWS_SECRET_ACCESS_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: AWS_SECRET_ACCESS_KEY
+            - name: AWS_REGION
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: AWS_REGION
+            - name: OPENAI_API_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: app-post-secrets
+                  key: OPENAI_API_KEY
+

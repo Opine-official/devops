@@ -1,0 +1,22 @@
+apiVersion: skaffold/v4beta8
+kind: Config
+metadata:
+  name: search-service
+build:
+  artifacts:
+    - image: aravsanj/opine-search-service
+      context: ../../../backend/search-service
+      sync:
+        infer:
+          - "**/*"
+  local:
+    push: false
+    useDockerCLI: true
+deploy:
+  helm:
+    releases:
+      - name: search-service
+        chartPath: .
+        valuesFiles:
+          - values.yaml
+        version: 0.1.0
